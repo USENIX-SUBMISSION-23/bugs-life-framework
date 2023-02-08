@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="{{ url_for('static', filename='js/socketio.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/run.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/evaluation_details.css') }}">
+    {% block head %}
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+  </head>
+  <body>
+  <h1>{{ self.title() }}</h1>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div>
+        <button onclick="document.getElementById('log_div').innerHTML = ''">Clear log</button>
+        <div id="log_div">
+            {% for log_entry in logs %}
+                <p>{{ log_entry["message"] }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="footer">
+      {% block footer %}
+      {% endblock %}
+    </div>
+  </body>
+</html>

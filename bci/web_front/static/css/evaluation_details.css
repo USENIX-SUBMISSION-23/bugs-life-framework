@@ -1,0 +1,16 @@
+.error {
+    color: red;
+}
+.eval_opts {
+    border-width: thin;
+    border-color: black;
+    border-style: solid;
+    padding: 5px;
+    margin: 5px;
+    vertical-align: top;
+    width: 500px;
+}
+
+.hidden_options {
+    display: none;
+}

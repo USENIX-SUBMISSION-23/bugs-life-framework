@@ -1,0 +1,87 @@
+version: '3'
+services:
+  web:
+    build:
+      context: poc_website
+    volumes:
+      - ./custom_pages:/custom_pages
+      - ./custom_resources:/app/static/custom
+      - ./reports:/reports
+    container_name: bci_web
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      bci_net:
+        aliases:
+          - leak.test
+          - sub.leak.test
+          - leaking.via
+          - hsts-only.com
+          - sub.hsts-only.com
+          - attack.er
+          - adition.com
+          - sub.adition.com
+          - sub.sub.adition.com
+          - data.test
+          - iframe.test
+          - re.port
+
+  base:
+    build:
+      context: .
+      target: prod
+    image: bci_core
+    shm_size: '2gb'
+    networks:
+      bci_net:
+        aliases:
+          - master
+    environment:
+      - bci_mongo_host=${bci_mongo_host}
+      - bci_mongo_database=${bci_mongo_database}
+      - bci_mongo_username=${bci_mongo_username}
+      - bci_mongo_password=${bci_mongo_password}
+      - host_pwd=${PWD}
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./binaries/chromium/artisanal:/app/binaries/chromium/artisanal
+      - ./binaries/firefox/artisanal:/app/binaries/firefox/artisanal
+      - ./drivers/firefox:/app/drivers/firefox
+      - ./drivers/chromium:/app/drivers/chromium
+      - ./snapshots:/app/snapshots
+      - ./browser-repos/firefox-release:/browser-repos/firefox-release
+      - ./browser-repos/chromium/src:/browser-repos/chromium
+      - ./extensions/chromium:/app/extensions/chromium
+      - ./extensions/firefox:/app/extensions/firefox
+      - ./reports:/reports
+      - ./logs:/app/logs
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/shm:/dev/shm
+    container_name: bci_core
+
+  bci:
+    extends: base
+    hostname: bci_master
+
+  bci_dev:
+    extends: bci
+    build:
+      context: .
+      target: dev
+    image: bci_core:dev
+    ports:
+      - "5678:5678"
+    container_name: bci_core_dev
+
+  worker:
+    extends: base
+    build:
+      context: .
+      target: worker
+    image: bci_worker
+
+networks:
+  bci_net:
+    name: bci_net

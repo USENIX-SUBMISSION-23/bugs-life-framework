@@ -1,0 +1,21 @@
+{%  block content %}
+    <div>
+        <form action="/run" method="post">
+            <input type="radio" id="chrome" name="browser" value="chrome">
+            <label for="chrome">Chrome</label><br>
+            <input type="radio" id="firefox" name="browser" value="firefox">
+            <label for="firefox">Firefox</label><br>
+
+            <label for="lower-version">Lower version:</label>
+            <input type="number" name="lower_version">
+
+            <label for="upper-version">Upper version:</label>
+            <input type="number" name="upper_version">
+
+            <label for="mech-id">Mechanism tag:</label>
+            <input type="text" name="mech_id">
+
+            <input type="submit">
+        </form>
+    </div>
+{%  endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Evaluation details: {{ evaluation_id }}{% endblock %}
+{% block content %}
+    <script src="{{ url_for('static', filename='js/evaluation_details.js') }}"></script>
+    <div>
+        <p>Progress: {{ lineage.nb_of_processed_states }} / {{ lineage.nb_of_states }}
+            ({{ (100 * lineage.nb_of_processed_states / lineage.nb_of_states)|round|int }} %)</p>
+    </div>
+    <div>
+        <ul id="eval-list">
+        {% for state in lineage.states %}
+            <li>{{ state }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+
+    </div>
+{% endblock %}

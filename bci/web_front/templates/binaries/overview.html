@@ -1,0 +1,53 @@
+{% extends 'base_with_logging.html' %}
+
+{% block title %}Local binary overview ({{ browser_name }}){% endblock %}
+{% block content %}
+    <div>
+        <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe>
+        <form action="{{ url_for('download_binary', browser=browser_name) }}" method="post" target="dummyframe">
+            <label for="snapshot_id">Snapshot id:</label><br>
+            <input type="text" id="snapshot_id" name="snapshot_id"><br>
+        </form>
+    </div>
+
+    <div>
+        <h3>Downloaded binaries</h3>
+        <small>Total: {{ downloaded_binaries|length }}</small>
+        <ul>
+        {% for binary in downloaded_binaries|sort(attribute="id") %}
+            <li>{{ binary["id"] }}</li>
+            <ul>
+            {% for key, value in binary.items() %}
+                {% if key != "id" %}
+                    <li>{{ key }}: {{ value }}</li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h3>Artisanal binaries</h3>
+        <form action="{{ url_for('update_artisanal_meta_data', browser=browser_name) }}" method="post" target="dummyframe">
+            <input type="submit" value="Update list">
+        </form>
+        <small>Total: {{ artisanal_binaries|length }}</small>
+        <table>
+            <tr>
+                <th>State id</th>
+                <th>Folder</th>
+                <th>Version</th>
+                <th>Valid</th>
+            </tr>
+        {% for binary in artisanal_binaries %}
+            <tr>
+                <td>{{ binary["id"] }}</td>
+                <td>{{ binary["folder"] }}</td>
+                <td>{{ binary["version"] }}</td>
+                <td>{{ "OK" if binary["valid"] else "INVALID" }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+{% endblock %}

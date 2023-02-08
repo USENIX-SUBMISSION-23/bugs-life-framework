@@ -1,0 +1,15 @@
+evaluation_jar: /app/snapshots/core-1.0-SNAPSHOT.jar
+custom_test_folder: /app/custom_tests
+custom_page_folder: /app/custom_pages
+firefox:
+  repo_path: /browser-repos/firefox-release
+  bin_folder_path: /app/binaries/firefox
+  data_folder_path: /app/data/firefox
+  driver_folder_path: /app/drivers/firefox
+  extension_folder_path: /app/extensions/firefox
+chromium:
+  repo_path: /browser-repos/chromium
+  bin_folder_path: /app/binaries/chromium
+  data_folder_path: /app/data/chromium
+  driver_folder_path: /app/drivers/chromium
+  extension_folder_path: /app/extensions/chromium

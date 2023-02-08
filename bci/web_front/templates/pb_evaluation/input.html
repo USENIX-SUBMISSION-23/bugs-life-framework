@@ -1,0 +1,107 @@
+{% extends 'base_with_logging.html' %}
+
+{% block title %}Evaluations overview ({{ browser_name }}){% endblock %}
+{% block content %}
+    <div>
+        <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe>
+        <form action="{{ url_for('start_pb_evaluation', browser=browser_name) }}" method="post" target="dummyframe">
+
+            <div class="eval_opts">
+            <h4>Revision set</h4>
+
+            <label for="lower_version">Lower version:</label><br>
+            <input type="text" id="lower_version" name="lower_version"><br>
+
+            <label for="upper_version">Upper version:</label><br>
+            <input type="text" id="upper_version" name="upper_version"><br>
+
+            <label>Only evaluate release commits (approximation)</label><br>
+            <input type="checkbox" id="only_release_commits" name="only_release_commits"><br><br>
+
+            <label for="lower_state_id">Lower state id:</label><br>
+            <input type="text" id="lower_state_id" name="lower_state_id"><br>
+
+            <label for="upper_state_id">Upper state id:</label><br>
+            <input type="text" id="upper_state_id" name="upper_state_id"><br>
+        </div>
+
+        <div class="eval_opts">
+            <h4>Browser configuration options</h4>
+
+            <input type="checkbox" id="btpc" name="btpc" value="true">
+            <label for="btpc">Block third-party cookies</label><br>
+
+            <input type="checkbox" id="tp" name="tp" value="true">
+            <label for="tp">Tracking protection</label><br>
+
+            <input type="checkbox" id="pb" name="pb" value="true">
+            <label for="tp">Private browsing</label><br>
+
+            <br>
+            Browser CLI options:<br>
+            {% for cli_option in cli_options %}
+                <input type="checkbox" id="{{ cli_option }}" name="{{ cli_option }}" value="true">
+                <label for="{{ cli_option }}">{{ cli_option }}</label><br>
+            {% endfor %}
+
+            <br>
+
+            Choose extension:<br>
+            {% for extension in extensions %}
+                <input type="checkbox" id="ext_{{ extension }}" name="extension" value="{{ extension }}">
+                <label for="{{ extension }}">{{ extension }}</label><br>
+            {% endfor %}
+        </div>
+
+        <div class="eval_opts">
+            <h4>Browser automation</h4>
+            <input type="radio" id="automation" name="automation_option" value="terminal">
+            <label for="terminal_automation">CLI automation</label><br>
+
+            <input type="radio" id="automation" name="automation_option" value="selenium">
+            <label for="terminal_automation">Selenium automation</label><br>
+
+            <h4>Search strategy</h4>
+
+            <input type="radio" id="bin_seq" name="search_strategy_option" value="bin_seq" onclick="search_stategy_click(this)" checked>
+            <label for="bin_seq">Binary sequence</label><br>
+
+            <input type="radio" id="bin_search" name="search_strategy_option" value="bin_search" onclick="search_stategy_click(this)">
+            <label for="bin_search">Binary search</label><br>
+
+            <div id="search_stategy_hidden_options" class="hidden_options">
+                <label for="mech_id">Mechanism id (only select mechanism group to which this mechanism id belongs):</label><br>
+                <input type="text" id="mech_id" name="mech_id"><br>
+                <label for="leak">Request or cookie:</label><br>
+                <input type="radio" id="request" name="leak" value="request">
+                <label for="request">Request</label><br>
+                <input type="radio" id="cookie" name="leak" value="cookie" checked>
+                <label for="cookie">Cookie</label><br>
+
+                <label for="cookie_name">Cookie name (only if cookie is selected):</label><br>
+                <input type="text" id="cookie_name" name="cookie_name" value="strict"><br>
+            </div>
+        </div>
+
+        <div id="evaluation_options" class="eval_opts">
+            <h4>Evaluation options</h4>
+
+            <label for="mech_group">Mechanism groups (if none is selected, all will be evaluated):</label><br>
+            {% for mech_group in mech_groups %}
+                <input type="checkbox" id="mg_{{ mech_group }}" name="{{ mech_group }}" value="true">
+                <label for="mech_group">{{ mech_group }}</label><br>
+            {% endfor %}
+        </div>
+
+        <input type="submit" value="Submit">
+        </form>
+        <br>
+        <form action="{{ url_for('stop_evaluation') }}" method="post" target="dummyframe">
+            <input type="submit" value="Stop current evaluation">
+        </form>
+    </div>
+    <br>
+    <div>
+
+    </div>
+{% endblock %}
